@@ -16,13 +16,24 @@ class Status500Wire:
 class TestRetryWire(unittest.TestCase):
     def test_exceptions(self):
         with self.assertRaises(ExceptionGroup):
-            HtRetryWire(ExceptionWire(), attempts=3).send("\r\n".join([
-                "GET / HTTP/1.1", "Host: www.google.com",
-                "Connection: Close\r\n\r\n"]))
+            HtRetryWire(ExceptionWire(), attempts=3).send(
+                "\r\n".join(
+                    [
+                        "GET / HTTP/1.1",
+                        "Host: www.google.com",
+                        "Connection: Close\r\n\r\n",
+                    ]
+                )
+            )
 
     def test_statuses(self):
         with self.assertRaises(ExceptionGroup):
-            HtRetryWire(Status500Wire(), attempts=3, retry_statuses=[500]).send("\r\n".join([
-                "GET / HTTP/1.1", "Host: www.google.com",
-                "Connection: Close\r\n\r\n"
-            ]))
+            HtRetryWire(Status500Wire(), attempts=3, retry_statuses=[500]).send(
+                "\r\n".join(
+                    [
+                        "GET / HTTP/1.1",
+                        "Host: www.google.com",
+                        "Connection: Close\r\n\r\n",
+                    ]
+                )
+            )

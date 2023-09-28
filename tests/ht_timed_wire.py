@@ -16,7 +16,12 @@ class SleepWire:
 class TestTimedWire(unittest.TestCase):
     def test_timeout(self):
         with self.assertRaises(TimeoutError):
-            HtTimedWire(SleepWire(sleep_for=10), 3).send("\r\n".join([
-                "GET / HTTP/1.1", "Host: www.google.com",
-                "Connection: Close\r\n\r\n"
-            ]))
+            HtTimedWire(SleepWire(sleep_for=10), 3).send(
+                "\r\n".join(
+                    [
+                        "GET / HTTP/1.1",
+                        "Host: www.google.com",
+                        "Connection: Close\r\n\r\n",
+                    ]
+                )
+            )

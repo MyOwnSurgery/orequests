@@ -11,7 +11,7 @@ class HtWire:
             sock.connect((self.address, self.port))
             sock.send(input_.encode())
 
-            response = ''
+            response = ""
             chunks = sock.recv(4096)
             while chunks:
                 response += chunks.decode()

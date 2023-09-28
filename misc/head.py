@@ -4,4 +4,4 @@ class Head:
 
     def value(self) -> str:
         splat = self.response.split("\r\n")
-        return '\r\n'.join(splat[:splat.index('')]).strip()
+        return "\r\n".join(splat[: splat.index("")]).strip()

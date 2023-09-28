@@ -14,7 +14,9 @@ class InvalidStatus(Exception):
 
 
 class HtRetryWire:
-    def __init__(self, origin: Wire, attempts: int = 3, retry_statuses: Optional[list] = None):
+    def __init__(
+        self, origin: Wire, attempts: int = 3, retry_statuses: Optional[list] = None
+    ):
         self.origin = origin
         self.attempts = attempts
         self.statuses = retry_statuses if retry_statuses else []
@@ -29,9 +31,13 @@ class HtRetryWire:
             except Exception as e:
                 errors.append(e)
             else:
-                if self.statuses and (status := Status(Head(response=response)).int_value()) in self.statuses:
+                if (
+                    self.statuses
+                    and (status := Status(Head(response=response)).int_value())
+                    in self.statuses
+                ):
                     errors.append(InvalidStatus(status=status))
                 else:
                     return response
             attempts += 1
-        raise ExceptionGroup('Errors while retrying', errors)
+        raise ExceptionGroup("Errors while retrying", errors)

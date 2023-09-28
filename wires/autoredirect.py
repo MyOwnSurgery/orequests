@@ -15,10 +15,10 @@ class AutoRedirect:
         res = self.origin.send(input_)
         head = Head(res)
         while 300 <= Status(head).int_value() <= 308:
-            new_addr = urllib.parse.urlparse(Header(head, 'Location').value())
+            new_addr = urllib.parse.urlparse(Header(head, "Location").value())
             host, port = new_addr.hostname, new_addr.port
             if not port:
-                port = 443 if host.startswith('https') else 80
+                port = 443 if host.startswith("https") else 80
 
             res = HtWire(host, port).send(input_)
             head = Head(res)
