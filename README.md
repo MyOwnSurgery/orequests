@@ -7,7 +7,7 @@
 ```python
 HtWire("www.example.com").send(
     "\r\n".join(
-        ["GET / HTTP/1.1", f"Host: www.example.com", "Connection: Close\r\n\r\n"]
+        ["GET / HTTP/1.1", "Host: www.example.com", "Connection: Close\r\n\r\n"]
     )
 )
 ```
@@ -18,7 +18,7 @@ HtWire("www.example.com").send(
     "\r\n".join(
         [
             "POST / HTTP/1.1",
-            f"Host: www.example.com",
+            "Host: www.example.com",
             "Content-Type: application/json",
             f"Content-Length: {len(msg)}",
             "Connection: Close",
@@ -32,7 +32,7 @@ HtWire("www.example.com").send(
 ```python
 response = HtWire("www.example.com").send(
     "\r\n".join(
-        ["GET / HTTP/1.1", f"Host: www.example.com", "Connection: Close\r\n\r\n"]
+        ["GET / HTTP/1.1", "Host: www.example.com", "Connection: Close\r\n\r\n"]
     )
 )
 response
@@ -40,19 +40,19 @@ response
 ```
 #### You can get the head of the response by
 ```python
-head = Head(response)
+head = Head(response=response)
 head.value()
 # HTTP/1.1 200 OK\r\nContent-Type: application/json
-ct_header = Header(head, 'Content-Type')
+ct_header = Header(head=head, name='Content-Type')
 ct_header.value()
 # application/json
-headers = Headers(head)
+headers = Headers(head=head)
 headers.value()
 # {'Content-Type': 'application/json'}
 ```
 #### Or get the body by
 ```python
-body = Body(response)
+body = Body(response=response)
 body.value()
 # {"msg": "HELLO"}
 ```
