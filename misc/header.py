@@ -1,6 +1,10 @@
 from misc.head import Head
 
 
+class NoSuchHeader(Exception):
+    pass
+
+
 class Header:
     def __init__(self, head: Head, name: str):
         self.head = head
@@ -13,4 +17,4 @@ class Header:
             if f"{self.name}:" in splat[i]:
                 return splat[i].split(":", maxsplit=1)[1].strip()
 
-        raise Exception
+        raise NoSuchHeader
