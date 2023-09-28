@@ -18,10 +18,3 @@ class HtWire:
                 chunks = sock.recv(4096)
 
         return response
-
-
-if __name__ == "__main__":
-    print(HtWire("demo4529285.mockable.io").send("\r\n".join([
-            "GET /aboba HTTP/1.1", "Host: demo4529285.mockable.io",
-            "Connection: Close\r\n\r\n"
-        ])))
