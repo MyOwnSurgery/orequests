@@ -11,7 +11,7 @@ HtWire("www.example.com").send(
     )
 )
 ```
-### 2) POST Request with payload
+#### 1.2) POST Request with payload
 ```python
 msg = '{"msg": "Hello"}'
 HtWire("www.example.com").send(
@@ -50,7 +50,7 @@ headers = Headers(head)
 headers.value()
 # {'Content-Type': 'application/json'}
 ```
-#### Or get the body
+#### Or get the body by
 ```python
 body = Body(response)
 body.value()
