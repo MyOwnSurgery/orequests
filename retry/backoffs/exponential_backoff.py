@@ -9,4 +9,4 @@ class ExponentialBackoff:
 
     def sleep(self):
         time.sleep(self.count * self.coeff * self.value if self.count else self.value)
-        self.count += 0  # TODO: get rid of immutability violation
+        self.count += 1  # TODO: get rid of immutability violation
