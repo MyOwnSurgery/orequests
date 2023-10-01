@@ -57,7 +57,7 @@ body.value()
 # {"msg": "HELLO"}
 ```
 ### 3) Combining wires by using the power of decorators
-#### Add a timeout to your request by just passing your original wire to HtTimedWire
+#### 3.1) Add a timeout to your request by just passing your original wire to HtTimedWire
 ```python
 HtTimedWire(HtWire("www.example.com"), timeout=3.0).send(
     "\r\n".join(
@@ -65,15 +65,7 @@ HtTimedWire(HtWire("www.example.com"), timeout=3.0).send(
     )
 )
 ```
-#### Add a retry mechanism to your request the similar way
-```python
-HtRetryWire(HtWire("www.example.com"), attempts=3, retry_statuses=[500]).send(
-    "\r\n".join(
-        ["GET / HTTP/1.1", "Host: www.example.com", "Connection: Close\r\n\r\n"]
-    )
-)
-```
-#### Add an auto redirection
+#### 3.2) Add an auto redirection the similar way
 ```python
 AutoRedirect(HtWire("www.example.com")).send(
     "\r\n".join(
@@ -81,5 +73,19 @@ AutoRedirect(HtWire("www.example.com")).send(
     )
 )
 ```
+#### 3.3) Add a retry mechanism by using retry strategies and backoffs
+```python
+HtRetryWire(
+    HtWire("www.example.com"),
+    strategy=StdRetry(
+        total=3, retry_statuses=[500], backoff=ConstantBackoff(value=1.0)
+    ),
+).send(
+    "\r\n".join(
+        ["GET / HTTP/1.1", "Host: www.example.com", "Connection: Close\r\n\r\n"]
+    )
+)
+```
+
 
 ## The package is at lazy development stage :)

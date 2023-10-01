@@ -1,5 +1,6 @@
 import unittest
 
+from retry.strategies.std_retry import StdRetry
 from wires.ht_retry_wire import HtRetryWire
 
 
@@ -16,7 +17,7 @@ class Status500Wire:
 class TestRetryWire(unittest.TestCase):
     def test_exceptions(self):
         with self.assertRaises(ExceptionGroup):
-            HtRetryWire(ExceptionWire(), attempts=3).send(
+            HtRetryWire(ExceptionWire()).send(
                 "\r\n".join(
                     [
                         "GET / HTTP/1.1",
@@ -28,7 +29,8 @@ class TestRetryWire(unittest.TestCase):
 
     def test_statuses(self):
         with self.assertRaises(ExceptionGroup):
-            HtRetryWire(Status500Wire(), attempts=3, retry_statuses=[500]).send(
+            retry_strategy = StdRetry(retry_statuses=[500])
+            HtRetryWire(Status500Wire(), strategy=retry_strategy).send(
                 "\r\n".join(
                     [
                         "GET / HTTP/1.1",
