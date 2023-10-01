@@ -6,4 +6,4 @@ class ConstantBackoff:
         self.value = value
 
     def sleep(self):
-        return time.sleep(self.value)
+        time.sleep(self.value)
