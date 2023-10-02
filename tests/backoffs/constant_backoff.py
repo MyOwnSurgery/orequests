@@ -11,4 +11,4 @@ class TestConstantBackoff(unittest.TestCase):
         backoff.sleep()
         end = timer()
 
-        self.assertGreaterEqual(end-start, sleep_for)
+        self.assertGreaterEqual(end - start, sleep_for)

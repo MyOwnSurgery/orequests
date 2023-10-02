@@ -25,12 +25,12 @@ class AutoRedirect:
             input_head, input_body = Head(input_), Body(input_)
             start_line = StartLine(input_head).value()
             headers = Headers(input_head).value()
-            headers['Host'] = host
+            headers["Host"] = host
 
             with io.StringIO() as stream:
-                stream.write(start_line + '\r\n')
+                stream.write(start_line + "\r\n")
                 stream.writelines(f"{k}: {v}\r\n" for k, v in headers.items())
-                stream.write(input_body.value() + '\r\n\r\n')
+                stream.write(input_body.value() + "\r\n\r\n")
                 new_input = stream.getvalue()
 
             if not port:

@@ -28,7 +28,7 @@ class TestAutoRedirect(unittest.TestCase):
         self.assertIn("google.com", res_head.value())
 
     def test_real_redirect(self):
-        """ Test a read redirect from google.com to www.google.com """
+        """Test a read redirect from google.com to www.google.com"""
         res_head = Head(
             AutoRedirect(HtWire("google.com")).send(
                 "\r\n".join(
