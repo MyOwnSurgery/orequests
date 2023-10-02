@@ -2,11 +2,11 @@ import time
 
 
 class ExponentialBackoff:
-    def __init__(self, value: float, coeff: float):
+    def __init__(self, value: float = 1.0, coeff: float = 2.0):
         self.value = value
         self.coeff = coeff
-        self.count = 0
+        self.count = 1
 
     def sleep(self):
-        time.sleep(self.count * self.coeff * self.value if self.count else self.value)
-        self.count += 1  # TODO: get rid of immutability violation
+        time.sleep(self.count * self.value)
+        self.count *= self.coeff  # TODO: get rid of immutability violation

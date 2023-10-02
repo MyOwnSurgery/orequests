@@ -9,9 +9,9 @@ class TestExponentialBackoff(unittest.TestCase):
         coeff = 2.0
         backoff = ExponentialBackoff(value=sleep_for, coeff=coeff)
 
-        for i in range(0, 5):
+        for i in [1, 2, 4, 8, 16]:
             start = timer()
             backoff.sleep()
             end = timer()
 
-            self.assertGreaterEqual(end-start, sleep_for*coeff*i if i else sleep_for)
+            self.assertGreaterEqual(end - start, i)
