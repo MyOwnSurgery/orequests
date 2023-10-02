@@ -8,4 +8,4 @@ class TestBody(unittest.TestCase):
         response = (
             'HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n{"msg": "HELLO"}'
         )
-        self.assertEqual(Body(response=response).as_json(), {"msg": "HELLO"})
+        self.assertEqual(Body(input_=response).as_json(), {"msg": "HELLO"})

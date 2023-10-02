@@ -10,5 +10,5 @@ class TestHeader(unittest.TestCase):
             'HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n{"msg": "HELLO"}'
         )
         self.assertEqual(
-            Header(Head(response=response), "Content-Type").value(), "application/json"
+            Header(Head(input_=response), "Content-Type").value(), "application/json"
         )

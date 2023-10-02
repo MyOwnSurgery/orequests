@@ -37,7 +37,7 @@ class StdRetry:
             else:
                 if (
                     self.statuses
-                    and (status := Status(Head(response=response)).int_value())
+                    and (status := Status(Head(input_=response)).int_value())
                     in self.statuses
                 ):
                     errors.append(InvalidStatus(status=status))

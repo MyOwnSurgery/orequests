@@ -9,6 +9,6 @@ class TestHead(unittest.TestCase):
             'HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n{"msg": "HELLO"}'
         )
         self.assertEqual(
-            Head(response=response).value(),
+            Head(input_=response).value(),
             "HTTP/1.1 200 OK\r\nContent-Type: application/json",
         )
