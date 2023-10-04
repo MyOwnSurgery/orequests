@@ -44,7 +44,7 @@ response
 ```
 #### You can get the head of the response by
 ```python
-head = Head(response=response)
+head = Head(input_=response)
 head.value()
 # HTTP/1.1 200 OK\r\nContent-Type: application/json
 ct_header = Header(head=head, name='Content-Type')
@@ -56,7 +56,7 @@ headers.value()
 ```
 #### Or get the body by
 ```python
-body = Body(response=response)
+body = Body(input_=response)
 body.value()
 # {"msg": "HELLO"}
 ```
