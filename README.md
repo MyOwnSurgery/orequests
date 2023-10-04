@@ -5,7 +5,7 @@
 ### 1) Send a request
 #### 1.1) Simple GET request
 ```python
-Response("www.example.com").send()
+Response("www.example.com").value()
 ```
 #### 1.2) A more configurable GET request
 ```python
