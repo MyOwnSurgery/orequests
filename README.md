@@ -3,7 +3,11 @@
 
 ## Examples:
 ### 1) Send a request
-#### 1.1) GET request
+#### 1.1) Simple GET request
+```python
+Response("www.example.com").send()
+```
+#### 1.2) A more configurable GET request
 ```python
 HtWire("www.example.com").send(
     "\r\n".join(
@@ -11,7 +15,7 @@ HtWire("www.example.com").send(
     )
 )
 ```
-#### 1.2) POST Request with payload
+#### 1.3) POST Request with payload
 ```python
 msg = '{"msg": "Hello"}'
 HtWire("www.example.com").send(
