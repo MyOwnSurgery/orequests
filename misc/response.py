@@ -8,18 +8,20 @@ class Response:
         self.url = url
 
     def value(self) -> str:
-        if self.url.startswith('https'):
+        if self.url.startswith("https"):
             port = 443
         else:
-            if not self.url.startswith('http'):
-                self.url = 'http://' + self.url
+            if not self.url.startswith("http"):
+                self.url = "http://" + self.url
             port = 80
 
         parsed_url = urllib.parse.urlparse(self.url)
         host, port = parsed_url.hostname, parsed_url.port if parsed_url.port else port
-        resource, params = parsed_url.path if parsed_url.path else '/', parsed_url.query
+        resource, params = parsed_url.path if parsed_url.path else "/", parsed_url.query
 
-        uri = resource + (f'?{params}' if params else '')
-        return HtWire(address=host, port=port).send("\r\n".join([f"GET {uri} HTTP/1.1",
-                                                                 f"Host: {host}",
-                                                                 "Connection: Close\r\n\r\n"]))
+        uri = resource + (f"?{params}" if params else "")
+        return HtWire(address=host, port=port).send(
+            "\r\n".join(
+                [f"GET {uri} HTTP/1.1", f"Host: {host}", "Connection: Close\r\n\r\n"]
+            )
+        )
