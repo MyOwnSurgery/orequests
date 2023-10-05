@@ -4,7 +4,7 @@ from misc.response import Response
 
 
 class TestResponse(unittest.TestCase):
-    def test_timeout(self):
+    def test_content(self):
         res = Response("www.google.com").value()
 
         self.assertIn('google.com', res)
