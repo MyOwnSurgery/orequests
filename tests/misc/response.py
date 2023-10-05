@@ -1,10 +1,13 @@
 import unittest
 
+from misc.head import Head
 from misc.response import Response
+from misc.status import Status
 
 
 class TestResponse(unittest.TestCase):
-    def test_content(self):
+    def test_response(self):
         res = Response("www.google.com").value()
 
+        self.assertEqual(Status(Head(input_=res)).int_value(), 200)
         self.assertIn('google.com', res)
