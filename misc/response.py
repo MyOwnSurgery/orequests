@@ -8,12 +8,11 @@ class Response:
         self.url = url
 
     def value(self) -> str:
-        if self.url.startswith('http'):
-            port = 80
-        elif self.url.startswith('https'):
+        if self.url.startswith('https'):
             port = 443
         else:
-            self.url = 'http://' + self.url
+            if not self.url.startswith('http'):
+                self.url = 'http://' + self.url
             port = 80
 
         parsed_url = urllib.parse.urlparse(self.url)
