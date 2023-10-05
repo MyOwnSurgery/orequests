@@ -2,7 +2,7 @@ from misc.body import Body
 from misc.head import Head
 from misc.header import Header
 from misc.headers import Headers
-from misc.start_line import StartLine
+from misc.st_line import StLine
 from wires.ht_wire import HtWire
 from misc.status import Status
 from wires.wire import Wire
@@ -23,7 +23,7 @@ class AutoRedirect:
             host, port = new_addr.hostname, new_addr.port
 
             input_head, input_body = Head(input_), Body(input_)
-            start_line = StartLine(input_head).value()
+            start_line = StLine(input_head).value()
             headers = Headers(input_head).value()
             headers["Host"] = host
 

@@ -1,7 +1,7 @@
 from misc.head import Head
 
 
-class StartLine:
+class StLine:
     def __init__(self, head: Head):
         self.head = head
 
