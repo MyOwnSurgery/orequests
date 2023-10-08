@@ -1,6 +1,7 @@
 import multiprocessing.context
 from multiprocessing.pool import ThreadPool
 
+from misc.input import Input
 from wires.wire import Wire
 
 
@@ -9,7 +10,7 @@ class HtTimedWire:
         self.origin = origin
         self.timeout = timeout
 
-    def send(self, input_: str) -> str:
+    def send(self, input_: Input) -> str:
         try:
             with ThreadPool(1) as pool:
                 result = pool.apply_async(self.origin.send, args=(input_,))

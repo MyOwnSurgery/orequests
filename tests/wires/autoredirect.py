@@ -1,13 +1,15 @@
 import unittest
 
 from misc.head import Head
+from misc.input import Input
 from misc.status import Status
+from misc.str_input import StrInput
 from wires.autoredirect import AutoRedirect
 from wires.ht_wire import HtWire
 
 
 class RedirectWire:
-    def send(self, input_: str) -> str:
+    def send(self, input_: Input) -> str:
         return "HTTP/1.1 301 Moved Permanently\r\nLocation: https://www.google.com/\r\n\r\n"
 
 
@@ -15,12 +17,14 @@ class TestAutoRedirect(unittest.TestCase):
     def test_redirect(self):
         res_head = Head(
             AutoRedirect(RedirectWire()).send(
-                "\r\n".join(
-                    [
-                        "GET / HTTP/1.1",
-                        "Host: www.google.com",
-                        "Connection: Close\r\n\r\n",
-                    ]
+                StrInput(
+                    "\r\n".join(
+                        [
+                            "GET / HTTP/1.1",
+                            "Host: www.google.com",
+                            "Connection: Close\r\n\r\n",
+                        ]
+                    )
                 )
             )
         )
@@ -31,12 +35,14 @@ class TestAutoRedirect(unittest.TestCase):
         """Test a read redirect from google.com to www.google.com"""
         res_head = Head(
             AutoRedirect(HtWire("google.com")).send(
-                "\r\n".join(
-                    [
-                        "GET / HTTP/1.1",
-                        "Host: google.com",
-                        "Connection: Close\r\n\r\n",
-                    ]
+                StrInput(
+                    "\r\n".join(
+                        [
+                            "GET / HTTP/1.1",
+                            "Host: google.com",
+                            "Connection: Close\r\n\r\n",
+                        ]
+                    )
                 )
             )
         )
