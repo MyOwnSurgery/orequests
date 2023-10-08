@@ -1,3 +1,4 @@
+from misc.str_input import StrInput
 from wires.ht_wire import HtWire
 
 import urllib.parse
@@ -21,7 +22,13 @@ class Response:
 
         uri = resource + (f"?{params}" if params else "")
         return HtWire(address=host, port=port).send(
-            "\r\n".join(
-                [f"GET {uri} HTTP/1.1", f"Host: {host}", "Connection: Close\r\n\r\n"]
+            StrInput(
+                "\r\n".join(
+                    [
+                        f"GET {uri} HTTP/1.1",
+                        f"Host: {host}",
+                        "Connection: Close\r\n\r\n",
+                    ]
+                )
             )
         )
