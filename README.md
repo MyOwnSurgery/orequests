@@ -44,7 +44,7 @@ HtWire("www.example.com").send(
     )
 )
 ```
-#### or by using the Request class
+##### or by using the Request class
 ```python
 msg = {"msg": "Hello"}
 HtWire("www.example.com").send(
