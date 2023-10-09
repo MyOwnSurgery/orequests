@@ -1,7 +1,7 @@
 from typing import Callable, Optional
 
-from misc.head import Head
-from misc.status import Status
+from misc.out.head import Head
+from misc.out.status import Status
 from retry.backoffs.backoff import BackOff
 from retry.backoffs.no_backoff import NoBackoff
 

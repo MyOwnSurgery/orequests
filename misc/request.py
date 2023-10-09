@@ -1,10 +1,12 @@
 from io import StringIO
 from typing import Optional
 
+from misc.in_.body import Body
+
 
 class Request:
     def __init__(
-        self, st_line: str, headers: Optional[dict] = None, body: Optional[str] = None
+        self, st_line: str, headers: Optional[dict] = None, body: Optional[Body] = None
     ):
         self.st_line = st_line
         self.headers = headers if headers else {}
@@ -22,7 +24,7 @@ class Request:
             stream.write("\r\n")
 
             if self.body:
-                stream.write(self.body)
+                stream.write(self.body.value())
                 stream.write("\r\n\r\n")
 
             input_ = stream.getvalue()

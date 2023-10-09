@@ -1,8 +1,8 @@
 import unittest
 
-from misc.head import Head
+from misc.out.head import Head
 from misc.input import Input
-from misc.status import Status
+from misc.out.status import Status
 from misc.str_input import StrInput
 from wires.autoredirect import AutoRedirect
 from wires.ht_wire import HtWire

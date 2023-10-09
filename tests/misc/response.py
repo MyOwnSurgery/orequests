@@ -1,8 +1,8 @@
 import unittest
 
-from misc.head import Head
+from misc.out.head import Head
 from misc.response import Response
-from misc.status import Status
+from misc.out.status import Status
 
 
 class TestResponse(unittest.TestCase):

@@ -1,7 +1,7 @@
 import unittest
 
-from misc.head import Head
-from misc.headers import Headers
+from misc.out.head import Head
+from misc.out.headers import Headers
 
 
 class TestHeaders(unittest.TestCase):

@@ -1,7 +1,7 @@
 import unittest
 
-from misc.head import Head
-from misc.st_line import StLine
+from misc.out.head import Head
+from misc.out.st_line import StLine
 
 
 class TestStLine(unittest.TestCase):

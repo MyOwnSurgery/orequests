@@ -1,6 +1,6 @@
 import unittest
 
-from misc.head import Head
+from misc.out.head import Head
 
 
 class TestHead(unittest.TestCase):

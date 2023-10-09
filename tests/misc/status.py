@@ -1,7 +1,7 @@
 import unittest
 
-from misc.head import Head
-from misc.status import Status
+from misc.out.head import Head
+from misc.out.status import Status
 
 
 class TestStatus(unittest.TestCase):
