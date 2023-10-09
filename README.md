@@ -17,6 +17,15 @@ HtWire("www.example.com").send(
     )
 )
 ```
+##### you can also form a request by using the Request class
+```python
+HtWire("www.example.com").send(
+    Request(
+        st_line="GET / HTTP/1.1",
+        headers={"Connection": "Close", "Host": "www.example.com"},
+    )
+)
+```
 #### 1.3) POST Request with payload
 ```python
 msg = '{"msg": "Hello"}'
@@ -32,6 +41,22 @@ HtWire("www.example.com").send(
                 f"\r\n{msg}\r\n\r\n",
             ]
         )
+    )
+)
+```
+#### or by using the Request class
+```python
+msg = {"msg": "Hello"}
+HtWire("www.example.com").send(
+    Request(
+        st_line="POST / HTTP/1.1",
+        headers={
+            "Connection": "Close",
+            "Host": "www.example.com",
+            "Content-Type": "application/json",
+            "Content-Length": len(str(msg)),
+        },
+        body=JsonBody(input_=msg),
     )
 )
 ```
