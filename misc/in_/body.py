@@ -1,3 +1,4 @@
+import json
 from io import StringIO
 from typing import Protocol
 
@@ -26,13 +27,7 @@ class JsonBody:
         self.input_ = input_
 
     def value(self) -> str:
-        with StringIO() as stream:
-            for el_key, el_val in self.input_.items():
-                stream.write(f"{el_key}: {el_val}\r\n")
-
-            input_ = stream.getvalue()
-
-        return input_
+        return json.dumps(self.input_)
 
     def bytes(self) -> bytes:
         return self.value().encode()
