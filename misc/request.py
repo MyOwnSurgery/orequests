@@ -2,7 +2,6 @@ from io import StringIO
 from typing import Optional
 
 from misc.in_.body import Body
-from misc.req_to_str import ReqToStr
 
 
 class Request:
@@ -17,83 +16,78 @@ class Request:
         return self.value().encode()
 
     def value(self) -> str:
-        return ReqToStr(self.st_line, self.headers, self.body).value()
+        with StringIO() as stream:
+            stream.write(f"{self.st_line}\r\n")
+
+            for h_name, h_val in self.headers.items():
+                stream.write(f"{h_name}: {h_val}\r\n")
+            stream.write("\r\n")
+
+            if self.body:
+                stream.write(self.body.value())
+                stream.write("\r\n\r\n")
+
+            input_ = stream.getvalue()
+
+        return input_
 
 
 class GetRequest:
     def __init__(self, uri: str = "", headers: Optional[dict] = None):
-        self.uri = uri if uri else "/"
-        self.headers = headers
+        self.origin = Request(st_line=f"GET {uri} HTTP/1.1", headers=headers)
 
     def bytes(self) -> bytes:
-        return self.value().encode()
+        return self.origin.bytes()
 
     def value(self) -> str:
-        return ReqToStr(
-            st_line=f"GET {self.uri} HTTP/1.1", headers=self.headers
-        ).value()
+        return self.origin.value()
 
 
 class PostRequest:
     def __init__(
         self, uri: str = "", headers: Optional[dict] = None, body: Optional[Body] = None
     ):
-        self.uri = uri if uri else "/"
-        self.headers = headers
-        self.body = body
+        self.origin = Request(st_line=f"POST {uri} HTTP/1.1", headers=headers, body=body)
 
     def bytes(self) -> bytes:
-        return self.value().encode()
+        return self.origin.bytes()
 
     def value(self) -> str:
-        return ReqToStr(
-            st_line=f"POST {self.uri} HTTP/1.1", headers=self.headers, body=self.body
-        ).value()
+        return self.origin.value()
 
 
 class PutRequest:
     def __init__(
         self, uri: str = "", headers: Optional[dict] = None, body: Optional[Body] = None
     ):
-        self.uri = uri if uri else "/"
-        self.headers = headers
-        self.body = body
+        self.origin = Request(st_line=f"PUT {uri} HTTP/1.1", headers=headers, body=body)
 
     def bytes(self) -> bytes:
-        return self.value().encode()
+        return self.origin.bytes()
 
     def value(self) -> str:
-        return ReqToStr(
-            st_line=f"PUT {self.uri} HTTP/1.1", headers=self.headers, body=self.body
-        ).value()
+        return self.origin.value()
 
 
 class PatchRequest:
     def __init__(
         self, uri: str = "", headers: Optional[dict] = None, body: Optional[Body] = None
     ):
-        self.uri = uri if uri else "/"
-        self.headers = headers
-        self.body = body
+        self.origin = Request(st_line=f"PATCH {uri} HTTP/1.1", headers=headers, body=body)
 
     def bytes(self) -> bytes:
-        return self.value().encode()
+        return self.origin.bytes()
 
     def value(self) -> str:
-        return ReqToStr(
-            st_line=f"PATCH {self.uri} HTTP/1.1", headers=self.headers, body=self.body
-        ).value()
+        return self.origin.value()
 
 
 class DeleteRequest:
     def __init__(self, uri: str = "", headers: Optional[dict] = None):
-        self.uri = uri
-        self.headers = headers
+        self.origin = Request(st_line=f"DELETE {uri} HTTP/1.1", headers=headers)
 
     def bytes(self) -> bytes:
-        return self.value().encode()
+        return self.origin.bytes()
 
     def value(self) -> str:
-        return ReqToStr(
-            st_line=f"DELETE {self.uri} HTTP/1.1", headers=self.headers
-        ).value()
+        return self.origin.value()
