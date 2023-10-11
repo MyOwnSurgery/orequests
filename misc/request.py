@@ -33,7 +33,7 @@ class Request:
 
 
 class GetRequest:
-    def __init__(self, uri: str = "", headers: Optional[dict] = None):
+    def __init__(self, uri: str = "/", headers: Optional[dict] = None):
         self.origin = Request(st_line=f"GET {uri} HTTP/1.1", headers=headers)
 
     def bytes(self) -> bytes:
@@ -45,7 +45,7 @@ class GetRequest:
 
 class PostRequest:
     def __init__(
-        self, uri: str = "", headers: Optional[dict] = None, body: Optional[Body] = None
+        self, uri: str = "/", headers: Optional[dict] = None, body: Optional[Body] = None
     ):
         self.origin = Request(st_line=f"POST {uri} HTTP/1.1", headers=headers, body=body)
 
@@ -58,7 +58,7 @@ class PostRequest:
 
 class PutRequest:
     def __init__(
-        self, uri: str = "", headers: Optional[dict] = None, body: Optional[Body] = None
+        self, uri: str = "/", headers: Optional[dict] = None, body: Optional[Body] = None
     ):
         self.origin = Request(st_line=f"PUT {uri} HTTP/1.1", headers=headers, body=body)
 
@@ -71,7 +71,7 @@ class PutRequest:
 
 class PatchRequest:
     def __init__(
-        self, uri: str = "", headers: Optional[dict] = None, body: Optional[Body] = None
+        self, uri: str = "/", headers: Optional[dict] = None, body: Optional[Body] = None
     ):
         self.origin = Request(st_line=f"PATCH {uri} HTTP/1.1", headers=headers, body=body)
 
@@ -83,7 +83,7 @@ class PatchRequest:
 
 
 class DeleteRequest:
-    def __init__(self, uri: str = "", headers: Optional[dict] = None):
+    def __init__(self, uri: str = "/", headers: Optional[dict] = None):
         self.origin = Request(st_line=f"DELETE {uri} HTTP/1.1", headers=headers)
 
     def bytes(self) -> bytes:
