@@ -1,5 +1,6 @@
 # ORequests
-## A more object-oriented approach to HTTP requests
+## A more object-oriented approach to HTTP requests. Following Elegant Objects ideas [link to author`s website](https://www.yegor256.com/)
+
 
 ## Examples:
 ### 1) Send a request
@@ -22,6 +23,15 @@ HtWire("www.example.com").send(
 HtWire("www.example.com").send(
     Request(
         st_line="GET / HTTP/1.1",
+        headers={"Connection": "Close", "Host": "www.example.com"},
+    )
+)
+```
+##### or GetRequest class
+```python
+HtWire("www.example.com").send(
+    GetRequest(
+        uri="/",
         headers={"Connection": "Close", "Host": "www.example.com"},
     )
 )
@@ -50,6 +60,21 @@ msg = {"msg": "Hello"}
 HtWire("www.example.com").send(
     Request(
         st_line="POST / HTTP/1.1",
+        headers={
+            "Connection": "Close",
+            "Host": "www.example.com",
+            "Content-Type": "application/json",
+            "Content-Length": len(str(msg)),
+        },
+        body=JsonBody(input_=msg),
+    )
+)
+```
+##### or by PostRequest class
+```python
+HtWire("www.example.com").send(
+    PostRequest(
+        uri="/",
         headers={
             "Connection": "Close",
             "Host": "www.example.com",
