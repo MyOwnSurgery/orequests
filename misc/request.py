@@ -6,18 +6,32 @@ from misc.in_.body import Body
 
 class Request:
     def __init__(
-        self, st_line: str, headers: Optional[dict] = None, body: Optional[Body] = None
+        self,
+        st_line: str,
+        params: Optional[dict] = None,
+        headers: Optional[dict] = None,
+        body: Optional[Body] = None,
     ):
         self.st_line = st_line
-        self.headers = headers
+        self.params = params
+        self.headers = headers if headers else {}
         self.body = body
 
     def bytes(self) -> bytes:
         return self.value().encode()
 
     def value(self) -> str:
+        if self.params:
+            splat_st_line = self.st_line.split(" ")
+            splat_st_line[1] += "?" + "&".join(
+                [f"{k}={v}" for k, v in self.params.items()]
+            )
+            st_line = " ".join(splat_st_line)
+        else:
+            st_line = self.st_line
+
         with StringIO() as stream:
-            stream.write(f"{self.st_line}\r\n")
+            stream.write(f"{st_line}\r\n")
 
             for h_name, h_val in self.headers.items():
                 stream.write(f"{h_name}: {h_val}\r\n")
@@ -33,8 +47,15 @@ class Request:
 
 
 class GetRequest:
-    def __init__(self, uri: str = "/", headers: Optional[dict] = None):
-        self.origin = Request(st_line=f"GET {uri} HTTP/1.1", headers=headers)
+    def __init__(
+        self,
+        uri: str = "/",
+        params: Optional[dict] = None,
+        headers: Optional[dict] = None,
+    ):
+        self.origin = Request(
+            st_line=f"GET {uri} HTTP/1.1", params=params, headers=headers
+        )
 
     def bytes(self) -> bytes:
         return self.origin.bytes()
@@ -45,9 +66,14 @@ class GetRequest:
 
 class PostRequest:
     def __init__(
-        self, uri: str = "/", headers: Optional[dict] = None, body: Optional[Body] = None
+        self,
+        uri: str = "/",
+        headers: Optional[dict] = None,
+        body: Optional[Body] = None,
     ):
-        self.origin = Request(st_line=f"POST {uri} HTTP/1.1", headers=headers, body=body)
+        self.origin = Request(
+            st_line=f"POST {uri} HTTP/1.1", headers=headers, body=body
+        )
 
     def bytes(self) -> bytes:
         return self.origin.bytes()
@@ -58,7 +84,10 @@ class PostRequest:
 
 class PutRequest:
     def __init__(
-        self, uri: str = "/", headers: Optional[dict] = None, body: Optional[Body] = None
+        self,
+        uri: str = "/",
+        headers: Optional[dict] = None,
+        body: Optional[Body] = None,
     ):
         self.origin = Request(st_line=f"PUT {uri} HTTP/1.1", headers=headers, body=body)
 
@@ -71,9 +100,14 @@ class PutRequest:
 
 class PatchRequest:
     def __init__(
-        self, uri: str = "/", headers: Optional[dict] = None, body: Optional[Body] = None
+        self,
+        uri: str = "/",
+        headers: Optional[dict] = None,
+        body: Optional[Body] = None,
     ):
-        self.origin = Request(st_line=f"PATCH {uri} HTTP/1.1", headers=headers, body=body)
+        self.origin = Request(
+            st_line=f"PATCH {uri} HTTP/1.1", headers=headers, body=body
+        )
 
     def bytes(self) -> bytes:
         return self.origin.bytes()

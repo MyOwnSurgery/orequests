@@ -44,9 +44,10 @@ class TestRequest(unittest.TestCase):
         self.assertEqual(
             GetRequest(
                 uri="/example",
+                params={"val1": 1, "val2": 2},
                 headers={"Connection": "Close", "Host": "www.example.com"},
             ).value(),
-            "GET /example HTTP/1.1\r\nConnection: Close\r\nHost: www.example.com\r\n\r\n",
+            "GET /example?val1=1&val2=2 HTTP/1.1\r\nConnection: Close\r\nHost: www.example.com\r\n\r\n",
         )
 
     def test_post_request(self):
