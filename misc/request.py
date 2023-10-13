@@ -14,7 +14,7 @@ class Request:
     ):
         self.st_line = st_line
         self.params = params
-        self.headers = headers if headers else {}
+        self.headers = headers.copy() if headers else {}
         self.body = body
 
     def bytes(self) -> bytes:
@@ -29,6 +29,10 @@ class Request:
             st_line = " ".join(splat_st_line)
         else:
             st_line = self.st_line
+
+        if self.body:
+            self.headers["Content-Length"] = self.body.content_length()
+            self.headers["Content-Type"] = self.body.content_type()
 
         with StringIO() as stream:
             stream.write(f"{st_line}\r\n")

@@ -63,8 +63,6 @@ HtWire("www.example.com").send(
         headers={
             "Connection": "Close",
             "Host": "www.example.com",
-            "Content-Type": "application/json",
-            "Content-Length": len(str(msg)),
         },
         body=JsonBody(input_=msg),
     )
@@ -78,8 +76,6 @@ HtWire("www.example.com").send(
         headers={
             "Connection": "Close",
             "Host": "www.example.com",
-            "Content-Type": "application/json",
-            "Content-Length": len(str(msg)),
         },
         body=JsonBody(input_=msg),
     )
