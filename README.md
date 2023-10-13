@@ -110,7 +110,10 @@ headers.value()
 ```python
 body = Body(input_=response)
 body.value()
-# {"msg": "HELLO"}
+# {"msg": "HELLO"} (str)
+body = JsonBody(input_=response)
+body.value()
+# {"msg": "HELLO"} (dict)
 ```
 ### 3) Combining wires by using the power of decorators
 #### 3.1) Add a timeout to your request by just passing your original wire to HtTimedWire
