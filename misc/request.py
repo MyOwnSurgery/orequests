@@ -1,7 +1,7 @@
 from io import StringIO
 from typing import Optional
 
-from misc.in_.body import Body
+from misc.in_.body import Body, CachedBody
 
 
 class Request:
@@ -30,9 +30,10 @@ class Request:
         else:
             st_line = self.st_line
 
-        if self.body:
-            self.headers["Content-Length"] = self.body.content_length()
-            self.headers["Content-Type"] = self.body.content_type()
+        body = CachedBody(self.body) if self.body else None
+        if body:
+            self.headers["Content-Length"] = body.content_length()
+            self.headers["Content-Type"] = body.content_type()
 
         with StringIO() as stream:
             stream.write(f"{st_line}\r\n")
@@ -41,8 +42,8 @@ class Request:
                 stream.write(f"{h_name}: {h_val}\r\n")
             stream.write("\r\n")
 
-            if self.body:
-                stream.write(self.body.value())
+            if body:
+                stream.write(body.value())
                 stream.write("\r\n\r\n")
 
             input_ = stream.getvalue()
