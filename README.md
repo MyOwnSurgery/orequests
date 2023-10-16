@@ -9,66 +9,33 @@
 Response("www.example.com").value()
 ```
 #### 1.2) A more configurable GET request
+##### Create a request using StrInput class or any of Request classes
 ```python
-HtWire("www.example.com").send(
-    StrInput(
-        "\r\n".join(
-            ["GET / HTTP/1.1", "Host: www.example.com", "Connection: Close\r\n\r\n"]
-        )
+req = StrInput(
+    "\r\n".join(
+        ["GET / HTTP/1.1", "Host: www.example.com", "Connection: Close\r\n\r\n"]
     )
 )
 ```
-##### you can also form a request by using the Request class
+##### or
 ```python
-HtWire("www.example.com").send(
-    Request(
-        st_line="GET / HTTP/1.1",
-        headers={"Connection": "Close", "Host": "www.example.com"},
-    )
+req = Request(
+    st_line="GET / HTTP/1.1",
+    headers={"Connection": "Close", "Host": "www.example.com"},
 )
 ```
-##### or GetRequest class
+##### or
 ```python
-HtWire("www.example.com").send(
-    GetRequest(
-        uri="/",
-        headers={"Connection": "Close", "Host": "www.example.com"},
-    )
+req = GetRequest(
+    uri="/",
+    headers={"Connection": "Close", "Host": "www.example.com"},
 )
+```
+##### then send a request using Wire
+```python
+HtWire("www.example.com").send(req)
 ```
 #### 1.3) POST Request with payload
-```python
-msg = '{"msg": "Hello"}'
-HtWire("www.example.com").send(
-    StrInput(
-        "\r\n".join(
-            [
-                "POST / HTTP/1.1",
-                "Host: www.example.com",
-                "Content-Type: application/json",
-                f"Content-Length: {len(msg)}",
-                "Connection: Close",
-                f"\r\n{msg}\r\n\r\n",
-            ]
-        )
-    )
-)
-```
-##### or by using the Request class
-```python
-msg = {"msg": "Hello"}
-HtWire("www.example.com").send(
-    Request(
-        st_line="POST / HTTP/1.1",
-        headers={
-            "Connection": "Close",
-            "Host": "www.example.com",
-        },
-        body=JsonBody(input_=msg),
-    )
-)
-```
-##### or by PostRequest class
 ```python
 HtWire("www.example.com").send(
     PostRequest(
@@ -77,7 +44,7 @@ HtWire("www.example.com").send(
             "Connection": "Close",
             "Host": "www.example.com",
         },
-        body=JsonBody(input_=msg),
+        body=JsonBody(input_={"msg": "Hello, World!"}),
     )
 )
 ```
@@ -92,7 +59,7 @@ HtWire("www.example.com").send(
     )
 )
 response
-# HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n{"msg": "HELLO"}
+# HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n{"msg": "Hello, World!"}
 ```
 #### You can get the head of the response by
 ```python
@@ -110,10 +77,10 @@ headers.value()
 ```python
 body = Body(input_=response)
 body.value()
-# {"msg": "HELLO"} (str)
+# {"msg": "Hello, World!"} (str)
 body = JsonBody(input_=response)
 body.value()
-# {"msg": "HELLO"} (dict)
+# {"msg": "Hello, World!"} (dict)
 ```
 ### 3) Combining wires by using the power of decorators
 #### 3.1) Add a timeout to your request by just passing your original wire to HtTimedWire
