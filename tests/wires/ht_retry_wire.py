@@ -35,11 +35,13 @@ class TestRetryWire(unittest.TestCase):
         with self.assertRaises(ExceptionGroup):
             retry_strategy = StdRetry(retry_statuses=[500])
             HtRetryWire(Status500Wire(), strategy=retry_strategy).send(
-                "\r\n".join(
-                    [
-                        "GET / HTTP/1.1",
-                        "Host: www.google.com",
-                        "Connection: Close\r\n\r\n",
-                    ]
+                StrInput(
+                    "\r\n".join(
+                        [
+                            "GET / HTTP/1.1",
+                            "Host: www.google.com",
+                            "Connection: Close\r\n\r\n",
+                        ]
+                    )
                 )
             )

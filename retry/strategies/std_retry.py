@@ -1,3 +1,4 @@
+from copy import copy
 from typing import Callable, Optional
 
 from misc.out.head import Head
@@ -23,7 +24,7 @@ class StdRetry:
     ):
         self.total = total
         self.statuses = retry_statuses if retry_statuses else []
-        self.backoff = backoff
+        self.backoff = copy(backoff)
 
     def retry(self, target: Callable):
         attempts = 0
