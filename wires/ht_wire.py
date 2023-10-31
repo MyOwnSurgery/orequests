@@ -42,7 +42,7 @@ class HtWire:
 
         body = Body(s).value().encode()
 
-        if len(body) == int(r_len):
+        if len(body) >= int(r_len):
             return True
 
         return False
