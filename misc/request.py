@@ -139,7 +139,7 @@ class CompoundRequest:
         self.requests = requests
 
     def bytes(self) -> bytes:
-        return functools.reduce(lambda a, b: a + b, (req.bytes() for req in self.requests))
+        return self.value().encode()
 
     def value(self) -> str:
-        return functools.reduce(lambda a, b: a + b, (req.value() for req in self.requests))
+        return '\r\n'.join(req.value() for req in self.requests)
