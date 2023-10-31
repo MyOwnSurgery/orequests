@@ -142,4 +142,4 @@ class RequestsBatch:
         return self.value().encode()
 
     def value(self) -> str:
-        return '\r\n'.join(req.value() for req in self.requests)
+        return "\r\n".join(req.value() for req in self.requests)
