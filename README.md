@@ -85,33 +85,24 @@ body.value()
 ### 3) Batch requests
 #### You can send multiple requests using one tcp connection
 ```python
-result = HtWire("www.example.com").send(
-    RequestsBatch(
-        requests=[
-            Request(
-                st_line="GET /point1 HTTP/1.1",
-                headers={"Connection": "Keep-Alive", "Host": "www.example.com"},
-            ),
-            Request(
-                st_line="GET /point2 HTTP/1.1",
-                headers={"Connection": "Keep-Alive", "Host": "www.example.com"},
-            ),
-            Request(
-                st_line="GET /point3 HTTP/1.1",
-                headers={"Connection": "Close", "Host": "www.example.com"},
-            ),
-        ]
+with LongConnection("www.example.com", 80) as conn:
+    res1 = HtWire(conn).send(
+        Request(
+            st_line="GET /point1 HTTP/1.1",
+            headers={"Connection": "Keep-Alive", "Host": "www.example.com"},
+        )
     )
-)
-```
-#### Then get individual responses by using the Responses class
-```python
-responses = Responses(input_=result)
-for response in responses.value():
-    response
+
+    res2 = HtWire(conn).send(
+        Request(
+            st_line="GET /point2 HTTP/1.1",
+            headers={"Connection": "Close", "Host": "www.example.com"},
+        )
+    )
+res1
 # HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n{"msg": "Hello from point1"}
+res2
 # HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n{"msg": "Hello from point2"}
-# HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n{"msg": "Hello from point3"}
 ```
 ### 4) Combining wires by using the power of decorators
 #### 4.1) Add a timeout to your request by just passing your original wire to HtTimedWire

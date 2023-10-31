@@ -7,7 +7,7 @@ class Body:
 
     def value(self) -> str:
         splat = self.input_.split("\r\n")
-        return "\r\n".join(splat[splat.index("") :]).strip()
+        return "\r\n".join(splat[splat.index("") :]).lstrip()
 
 
 class JsonBody:
