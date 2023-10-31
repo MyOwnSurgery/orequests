@@ -1,4 +1,6 @@
+import functools
 from io import StringIO
+from functools import reduce
 from typing import Optional
 
 from misc.in_.body import Body, CachedBody
@@ -130,3 +132,14 @@ class DeleteRequest:
 
     def value(self) -> str:
         return self.origin.value()
+
+
+class CompoundRequest:
+    def __init__(self, requests: list[Request]):
+        self.requests = requests
+
+    def bytes(self) -> bytes:
+        return functools.reduce(lambda a, b: a + b, (req.bytes() for req in self.requests))
+
+    def value(self) -> str:
+        return functools.reduce(lambda a, b: a + b, (req.value() for req in self.requests))
