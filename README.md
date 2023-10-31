@@ -51,7 +51,7 @@ HtWire("www.example.com").send(
 ### 2) Parse a response
 #### Once you got a response
 ```python
-HtWire("www.example.com").send(
+response = HtWire("www.example.com").send(
     StrInput(
         "\r\n".join(
             ["GET / HTTP/1.1", "Host: www.example.com", "Connection: Close\r\n\r\n"]
@@ -82,8 +82,39 @@ body = JsonBody(input_=response)
 body.value()
 # {"msg": "Hello, World!"} (dict)
 ```
-### 3) Combining wires by using the power of decorators
-#### 3.1) Add a timeout to your request by just passing your original wire to HtTimedWire
+### 3) Batch requests
+#### You can send multiple request using one tcp connection
+```python
+result = HtWire("www.example.com").send(
+    RequestsBatch(
+        requests=[
+            Request(
+                st_line="GET /point1 HTTP/1.1",
+                headers={"Connection": "Keep-Alive", "Host": "www.example.com"},
+            ),
+            Request(
+                st_line="GET /point2 HTTP/1.1",
+                headers={"Connection": "Keep-Alive", "Host": "www.example.com"},
+            ),
+            Request(
+                st_line="GET /point3 HTTP/1.1",
+                headers={"Connection": "Close", "Host": "www.example.com"},
+            ),
+        ]
+    )
+)
+```
+#### Then get individual responses by using the Responses class
+```python
+responses = Responses(input_=result)
+for response in responses.value():
+    response
+# HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n{"msg": "Hello from point1"}
+# HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n{"msg": "Hello from point2"}
+# HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n{"msg": "Hello from point3"}
+```
+### 4) Combining wires by using the power of decorators
+#### 4.1) Add a timeout to your request by just passing your original wire to HtTimedWire
 ```python
 HtTimedWire(HtWire("www.example.com"), timeout=3.0).send(
     StrInput(
@@ -93,7 +124,7 @@ HtTimedWire(HtWire("www.example.com"), timeout=3.0).send(
     )
 )
 ```
-#### 3.2) Add an auto redirection the similar way
+#### 4.2) Add an auto redirection the similar way
 ```python
 AutoRedirect(HtWire("www.example.com")).send(
     StrInput(
@@ -103,7 +134,7 @@ AutoRedirect(HtWire("www.example.com")).send(
     )
 )
 ```
-#### 3.3) Add a retry mechanism by using retry strategies and backoffs
+#### 4.3) Add a retry mechanism by using retry strategies and backoffs
 ```python
 HtRetryWire(
     HtWire("www.example.com"),
