@@ -134,7 +134,7 @@ class DeleteRequest:
         return self.origin.value()
 
 
-class CompoundRequest:
+class RequestsBatch:
     def __init__(self, requests: list[Request]):
         self.requests = requests
 
