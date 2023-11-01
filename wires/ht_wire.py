@@ -9,11 +9,11 @@ from net.connections import ShortConnection, Connection
 
 class HtWire:
     @dispatch(str, int)
-    def __init__(self, address, port):
+    def __init__(self, address: str, port: int):
         self.connection = ShortConnection(address, port)
 
     @dispatch(str)
-    def __init__(self, address):
+    def __init__(self, address: str):
         self.connection = ShortConnection(address, 80)
 
     @dispatch(Connection)
