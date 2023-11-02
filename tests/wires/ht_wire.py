@@ -25,19 +25,13 @@ class TestTimedWire(unittest.TestCase):
     def test_response_simple(self):
         response = 'HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: 16\r\n\r\n{"msg": "HELLO"}'
         with FkConnection(response.encode()) as conn:
-            res = HtWire(conn).send(
-                StrInput('')
-            )
+            res = HtWire(conn).send(StrInput(""))
 
         self.assertEqual(res, response)
 
     def test_response_newlines(self):
         response = 'HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: 17\r\n\r\n{"msg": "HELLO"}\n'
         with FkConnection(response.encode()) as conn:
-            res = HtWire(conn).send(
-                StrInput('')
-            )
+            res = HtWire(conn).send(StrInput(""))
 
         self.assertEqual(res, response)
-
-

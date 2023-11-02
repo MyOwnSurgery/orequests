@@ -1,6 +1,4 @@
-import functools
 from io import StringIO
-from functools import reduce
 from typing import Optional
 
 from misc.in_.body import Body, CachedBody

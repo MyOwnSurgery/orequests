@@ -1,5 +1,5 @@
 from typing import Protocol, runtime_checkable
-from socket import socket
+
 from multipledispatch import dispatch
 
 from net.sockets import Socket
