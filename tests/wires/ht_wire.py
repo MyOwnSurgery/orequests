@@ -44,3 +44,11 @@ class TestHtWire(unittest.TestCase):
             res = HtWire(conn).send(StrInput(""))
 
         self.assertEqual(res, response)
+
+    def test_response_empty_body(self):
+        response = ('HTTP/1.1 200 OK\r\nContent-Type: application/json'
+                    '\r\nContent-Length: 0\r\n\r\n')
+        with FkConnection(response.encode()) as conn:
+            res = HtWire(conn).send(StrInput(""))
+
+        self.assertEqual(res, response)
