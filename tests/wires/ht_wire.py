@@ -29,8 +29,17 @@ class TestHtWire(unittest.TestCase):
 
         self.assertEqual(res, response)
 
-    def test_response_newlines(self):
-        response = 'HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: 17\r\n\r\n{"msg": "HELLO"}\n'
+    def test_response_end_newline(self):
+        response = ('HTTP/1.1 200 OK\r\nContent-Type: application/json'
+                    '\r\nContent-Length: 17\r\n\r\n{"msg": "HELLO"}\n')
+        with FkConnection(response.encode()) as conn:
+            res = HtWire(conn).send(StrInput(""))
+
+        self.assertEqual(res, response)
+
+    def test_response_start_newline(self):
+        response = ('HTTP/1.1 200 OK\r\nContent-Type: application/json'
+                    '\r\nContent-Length: 18\r\n\r\n\n{"msg": "HELLO"}\n')
         with FkConnection(response.encode()) as conn:
             res = HtWire(conn).send(StrInput(""))
 
