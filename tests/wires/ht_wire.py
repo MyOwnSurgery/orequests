@@ -23,7 +23,8 @@ class FkConnection:
 
 class TestHtWire(unittest.TestCase):
     def test_response_simple(self):
-        response = 'HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: 16\r\n\r\n{"msg": "HELLO"}'
+        response = ('HTTP/1.1 200 OK\r\nContent-Type: application/json'
+                    '\r\nContent-Length: 16\r\n\r\n{"msg": "HELLO"}')
         with FkConnection(response.encode()) as conn:
             res = HtWire(conn).send(StrInput(""))
 
