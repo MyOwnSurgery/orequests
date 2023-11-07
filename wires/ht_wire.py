@@ -20,6 +20,7 @@ class HtWire:
     def __init__(self, connection: Connection):
         self.connection = connection
 
+    # @TODO: optimize response len checking (peek the socket)
     def send(self, input_: Input) -> str:
         with self.connection as conn:
             conn.send(input_.bytes())
