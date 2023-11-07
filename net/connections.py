@@ -63,7 +63,7 @@ class LongConnection:
         return self.socket.recv(chunk)
 
 
-class ShortConnection(Protocol):
+class ShortConnection:
     @dispatch(str, int)
     def __init__(self, address: str, port: int):
         self.__init__(Socket(addr=address, port=port))
