@@ -33,6 +33,7 @@ class HtWire:
         return response
 
     # @TODO: get rid of it immediately
+    # @TODO: handle chunked first
     @staticmethod
     def _check_body_len(s: str) -> bool:
         head = Head(s)
