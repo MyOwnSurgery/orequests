@@ -35,9 +35,13 @@ class HtWire:
     # @TODO: get rid of it immediately
     @staticmethod
     def _check_body_len(s: str) -> bool:
+        head = Head(s)
         try:
-            r_len = Header(Head(s), "Content-Length").value()
+            r_len = Header(head, "Content-Length").value()
         except NoSuchHeader:
+            if (Header(head, "Transfer-Encoding").value() == 'chunked'
+                    and s.endswith('\r\n0\r\n\r\n')):
+                return True
             return False
 
         body = Body(s).value().encode()
