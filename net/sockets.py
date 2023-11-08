@@ -36,4 +36,4 @@ class Socket:
         return self.sock.recv(*args)
 
     def has_some(self) -> bool:
-        return bool(select([self.sock], [], [], 1)[0])
+        return bool(select([self.sock], [], [], 0)[0])
