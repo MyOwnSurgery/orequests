@@ -1,5 +1,5 @@
 from select import select
-from socket import socket
+from socket import socket, MSG_PEEK
 from typing import Protocol
 
 
@@ -36,4 +36,4 @@ class Socket:
         return self.sock.recv(*args)
 
     def has_some(self) -> bool:
-        return bool(select([self.sock], [], [], 0)[0])
+        return bool(select([self.sock], [], [], 0)[0]) and self.recv(1, MSG_PEEK)

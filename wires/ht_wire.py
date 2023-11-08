@@ -29,8 +29,6 @@ class HtWire:
             while True:
                 while conn.has_some():
                     chunk = conn.recv(4096)
-                    if not chunk:
-                        break
                     response = response + chunk.decode()
 
                 if self._check_body_len(response):
