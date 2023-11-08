@@ -16,7 +16,10 @@ class Connection(Protocol):
     def send(self, input_: bytes):
         pass
 
-    def recv(self, chunk) -> bytes:
+    def recv(self, *args) -> bytes:
+        pass
+
+    def has_some(self) -> bool:
         pass
 
 

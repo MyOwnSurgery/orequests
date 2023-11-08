@@ -20,18 +20,23 @@ class HtWire:
     def __init__(self, connection: Connection):
         self.connection = connection
 
-    # @TODO: optimize response len checking (peek the socket)
     def send(self, input_: Input) -> str:
         with self.connection as conn:
             conn.send(input_.bytes())
 
             response = ""
-            chunks = conn.recv(4096)
 
-            while not self._check_body_len(response := response + chunks.decode()):
-                chunks = conn.recv(4096)
+            while True:
+                while conn.has_some():
+                    chunk = conn.recv(4096)
+                    if not chunk:
+                        break
+                    response = response + chunk.decode()
 
-        return response
+                if self._check_body_len(response):
+                    return response
+
+                response = response + conn.recv(4096).decode()
 
     # @TODO: get rid of it immediately
     # @TODO: handle chunked first
@@ -41,13 +46,15 @@ class HtWire:
         try:
             r_len = Header(head, "Content-Length").value()
         except NoSuchHeader:
-            if (Header(head, "Transfer-Encoding").value() == 'chunked'
-                    and s.endswith('\r\n0\r\n\r\n')):
-                return True
+            try:
+                if (Header(head, "Transfer-Encoding").value() == 'chunked'
+                        and s.endswith('\r\n0\r\n\r\n')):
+                    return True
+            except NoSuchHeader:
+                return False
             return False
 
         body = Body(s).value().encode()
-
         if len(body) >= int(r_len):
             return True
 

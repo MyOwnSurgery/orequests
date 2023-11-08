@@ -1,4 +1,20 @@
+from select import select
 from socket import socket
+from typing import Protocol
+
+
+class _Socket(Protocol):
+    def connect(self):
+        pass
+
+    def close(self):
+        pass
+
+    def send(self, input_: bytes):
+        pass
+
+    def recv(self, chunk) -> bytes:
+        pass
 
 
 class Socket:
