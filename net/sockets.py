@@ -32,5 +32,8 @@ class Socket:
     def send(self, input_: bytes):
         self.sock.send(input_)
 
-    def recv(self, chunk) -> bytes:
-        return self.sock.recv(chunk)
+    def recv(self, *args) -> bytes:
+        return self.sock.recv(*args)
+
+    def has_some(self) -> bool:
+        return bool(select([self.sock], [], [], 1)[0])

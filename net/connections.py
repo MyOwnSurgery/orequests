@@ -37,8 +37,11 @@ class LongConnection:
         def send(self, input_: bytes):
             self.sock.send(input_)
 
-        def recv(self, chunk) -> bytes:
-            return self.sock.recv(chunk)
+        def recv(self, *args) -> bytes:
+            return self.sock.recv(*args)
+
+        def has_some(self) -> bool:
+            return self.sock.has_some()
 
     @dispatch(str, int)
     def __init__(self, address: str, port: int):
@@ -62,8 +65,11 @@ class LongConnection:
     def send(self, input_: bytes):
         self.socket.send(input_)
 
-    def recv(self, chunk) -> bytes:
-        return self.socket.recv(chunk)
+    def recv(self, *args) -> bytes:
+        return self.socket.recv(*args)
+
+    def has_some(self) -> bool:
+        return self.socket.has_some()
 
 
 class ShortConnection:
@@ -89,5 +95,8 @@ class ShortConnection:
     def send(self, input_: bytes):
         self.socket.send(input_)
 
-    def recv(self, chunk) -> bytes:
-        return self.socket.recv(chunk)
+    def recv(self, *args) -> bytes:
+        return self.socket.recv(*args)
+
+    def has_some(self) -> bool:
+        return self.socket.has_some()
