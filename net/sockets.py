@@ -1,3 +1,4 @@
+import ssl
 from select import select
 from socket import socket, MSG_PEEK
 from typing import Protocol
@@ -20,10 +21,10 @@ class _Socket(Protocol):
         pass
 
 class Socket:
-    def __init__(self, addr: str, port: int):
+    def __init__(self, addr: str, port: int, sock: socket = None):
         self.addr = addr
         self.port = port
-        self.sock = socket()
+        self.sock = sock if sock else socket()
 
     def connect(self):
         self.sock.connect((self.addr, self.port))
@@ -39,3 +40,27 @@ class Socket:
 
     def has_some(self) -> bool:
         return bool(select([self.sock], [], [], 0)[0]) and self.recv(1, MSG_PEEK)
+
+
+class SafeSocket:
+    def __init__(self, addr: str, port: int, sock: socket = None, ssl_ctx: ssl.SSLContext = None):
+        self.ssl_ctx = ssl_ctx or ssl.create_default_context()
+        self.origin = Socket(addr,
+                             port,
+                             self.ssl_ctx.wrap_socket(sock or socket(), server_hostname=addr))
+
+    def connect(self):
+        self.origin.connect()
+
+    def close(self):
+        self.origin.close()
+
+    def send(self, input_: bytes):
+        self.origin.send(input_=input_)
+
+    def recv(self, *args) -> bytes:
+        return self.origin.recv(*args)
+
+    def has_some(self) -> bool:
+        return self.origin.has_some()
+
