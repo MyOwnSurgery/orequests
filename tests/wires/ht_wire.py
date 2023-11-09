@@ -23,32 +23,40 @@ class FkConnection:
 
 class TestHtWire(unittest.TestCase):
     def test_response_simple(self):
-        response = ('HTTP/1.1 200 OK\r\nContent-Type: application/json'
-                    '\r\nContent-Length: 16\r\n\r\n{"msg": "HELLO"}')
+        response = (
+            "HTTP/1.1 200 OK\r\nContent-Type: application/json"
+            '\r\nContent-Length: 16\r\n\r\n{"msg": "HELLO"}'
+        )
         with FkConnection(response.encode()) as conn:
             res = HtWire(conn).send(StrInput(""))
 
         self.assertEqual(res, response)
 
     def test_response_end_newline(self):
-        response = ('HTTP/1.1 200 OK\r\nContent-Type: application/json'
-                    '\r\nContent-Length: 17\r\n\r\n{"msg": "HELLO"}\n')
+        response = (
+            "HTTP/1.1 200 OK\r\nContent-Type: application/json"
+            '\r\nContent-Length: 17\r\n\r\n{"msg": "HELLO"}\n'
+        )
         with FkConnection(response.encode()) as conn:
             res = HtWire(conn).send(StrInput(""))
 
         self.assertEqual(res, response)
 
     def test_response_start_newline(self):
-        response = ('HTTP/1.1 200 OK\r\nContent-Type: application/json'
-                    '\r\nContent-Length: 18\r\n\r\n\n{"msg": "HELLO"}\n')
+        response = (
+            "HTTP/1.1 200 OK\r\nContent-Type: application/json"
+            '\r\nContent-Length: 18\r\n\r\n\n{"msg": "HELLO"}\n'
+        )
         with FkConnection(response.encode()) as conn:
             res = HtWire(conn).send(StrInput(""))
 
         self.assertEqual(res, response)
 
     def test_response_empty_body(self):
-        response = ('HTTP/1.1 200 OK\r\nContent-Type: application/json'
-                    '\r\nContent-Length: 0\r\n\r\n')
+        response = (
+            "HTTP/1.1 200 OK\r\nContent-Type: application/json"
+            "\r\nContent-Length: 0\r\n\r\n"
+        )
         with FkConnection(response.encode()) as conn:
             res = HtWire(conn).send(StrInput(""))
 

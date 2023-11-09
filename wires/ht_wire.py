@@ -45,8 +45,9 @@ class HtWire:
             r_len = Header(head, "Content-Length").value()
         except NoSuchHeader:
             try:
-                if (Header(head, "Transfer-Encoding").value() == 'chunked'
-                        and s.endswith('\r\n0\r\n\r\n')):
+                if Header(
+                    head, "Transfer-Encoding"
+                ).value() == "chunked" and s.endswith("\r\n0\r\n\r\n"):
                     return True
             except NoSuchHeader:
                 return False
