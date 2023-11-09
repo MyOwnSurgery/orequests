@@ -16,6 +16,8 @@ class _Socket(Protocol):
     def recv(self, chunk) -> bytes:
         pass
 
+    def has_some(self) -> bool:
+        pass
 
 class Socket:
     def __init__(self, addr: str, port: int):
