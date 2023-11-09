@@ -47,9 +47,12 @@ class SafeSocket:
     def __init__(
         self, addr: str, port: int, sock: socket = None, ssl_ctx: ssl.SSLContext = None
     ):
-        self.ssl_ctx = ssl_ctx or ssl.create_default_context()
         self.origin = Socket(
-            addr, port, self.ssl_ctx.wrap_socket(sock or socket(), server_hostname=addr)
+            addr,
+            port,
+            (ssl_ctx or ssl.create_default_context()).wrap_socket(
+                sock or socket(), server_hostname=addr
+            ),
         )
 
     def connect(self):
