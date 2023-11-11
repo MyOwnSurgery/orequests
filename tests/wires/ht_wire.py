@@ -4,7 +4,7 @@ from misc.str_input import StrInput
 from wires.ht_wire import HtWire
 
 
-class FkConnection:
+class FkSession:
     def __init__(self, response):
         self.response = response
 
@@ -20,6 +20,9 @@ class FkConnection:
     def recv(self, chunk) -> bytes:
         return self.response
 
+    def has_some(self) -> bool:
+        return False
+
 
 class TestHtWire(unittest.TestCase):
     def test_response_simple(self):
@@ -27,8 +30,8 @@ class TestHtWire(unittest.TestCase):
             "HTTP/1.1 200 OK\r\nContent-Type: application/json"
             '\r\nContent-Length: 16\r\n\r\n{"msg": "HELLO"}'
         )
-        with FkConnection(response.encode()) as conn:
-            res = HtWire(conn).send(StrInput(""))
+        with FkSession(response.encode()) as sess:
+            res = HtWire(sess).send(StrInput(""))
 
         self.assertEqual(res, response)
 
@@ -37,8 +40,8 @@ class TestHtWire(unittest.TestCase):
             "HTTP/1.1 200 OK\r\nContent-Type: application/json"
             '\r\nContent-Length: 17\r\n\r\n{"msg": "HELLO"}\n'
         )
-        with FkConnection(response.encode()) as conn:
-            res = HtWire(conn).send(StrInput(""))
+        with FkSession(response.encode()) as sess:
+            res = HtWire(sess).send(StrInput(""))
 
         self.assertEqual(res, response)
 
@@ -47,8 +50,8 @@ class TestHtWire(unittest.TestCase):
             "HTTP/1.1 200 OK\r\nContent-Type: application/json"
             '\r\nContent-Length: 18\r\n\r\n\n{"msg": "HELLO"}\n'
         )
-        with FkConnection(response.encode()) as conn:
-            res = HtWire(conn).send(StrInput(""))
+        with FkSession(response.encode()) as sess:
+            res = HtWire(sess).send(StrInput(""))
 
         self.assertEqual(res, response)
 
@@ -57,7 +60,7 @@ class TestHtWire(unittest.TestCase):
             "HTTP/1.1 200 OK\r\nContent-Type: application/json"
             "\r\nContent-Length: 0\r\n\r\n"
         )
-        with FkConnection(response.encode()) as conn:
-            res = HtWire(conn).send(StrInput(""))
+        with FkSession(response.encode()) as sess:
+            res = HtWire(sess).send(StrInput(""))
 
         self.assertEqual(res, response)

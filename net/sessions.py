@@ -6,7 +6,7 @@ from net.sockets import Socket
 
 
 @runtime_checkable
-class Connection(Protocol):
+class Session(Protocol):
     def __enter__(self):
         pass
 
@@ -23,8 +23,8 @@ class Connection(Protocol):
         pass
 
 
-class LongConnection:
-    class _FkConnection:
+class LongSession:
+    class _FkSession:
         def __init__(self, sock: Socket):
             self.sock = sock
 
@@ -57,7 +57,7 @@ class LongConnection:
 
     def __enter__(self):
         self.socket.connect()
-        return self._FkConnection(self.socket)
+        return self._FkSession(self.socket)
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.socket.close()
@@ -72,7 +72,7 @@ class LongConnection:
         return self.socket.has_some()
 
 
-class ShortConnection:
+class ShortSession:
     @dispatch(str, int)
     def __init__(self, address: str, port: int):
         self.__init__(Socket(addr=address, port=port))

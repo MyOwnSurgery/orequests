@@ -4,24 +4,24 @@ from misc.input import Input
 from misc.out.body import Body
 from misc.out.head import Head
 from misc.out.header import Header, NoSuchHeader
-from net.connections import ShortConnection, Connection
+from net.sessions import ShortSession, Session
 
 
 class HtWire:
     @dispatch(str, int)
     def __init__(self, address: str, port: int):
-        self.connection = ShortConnection(address, port)
+        self.session = ShortSession(address, port)
 
     @dispatch(str)
     def __init__(self, address: str):
-        self.connection = ShortConnection(address, 80)
+        self.session = ShortSession(address, 80)
 
-    @dispatch(Connection)
-    def __init__(self, connection: Connection):
-        self.connection = connection
+    @dispatch(Session)
+    def __init__(self, session: Session):
+        self.session = session
 
     def send(self, input_: Input) -> str:
-        with self.connection as conn:
+        with self.session as conn:
             conn.send(input_.bytes())
 
             response = ""
