@@ -4,7 +4,7 @@ from socket import socket, MSG_PEEK
 from typing import Protocol
 
 
-class _Socket(Protocol):
+class ISocket(Protocol):
     def connect(self):
         pass
 
