@@ -6,8 +6,8 @@ class Body:
         self.input_ = input_
 
     def value(self) -> str:
-        splat = self.input_.split("\r\n")
-        return "\r\n".join(splat[splat.index("") :])
+        splat = self.input_.split("\r\n\r\n")
+        return splat[1]
 
 
 class JsonBody:
