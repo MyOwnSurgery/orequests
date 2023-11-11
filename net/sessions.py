@@ -6,7 +6,7 @@ from net.sockets import Socket, SafeSocket, ISocket
 
 
 @runtime_checkable
-class Session(Protocol):
+class ISession(Protocol):
     def __enter__(self):
         pass
 
@@ -43,7 +43,7 @@ class _FkSession:
         return self.sock.has_some()
 
 
-class LongSession:
+class Session:
     @dispatch(str, int)
     def __init__(self, address: str, port: int):
         self.__init__(Socket(addr=address, port=port))

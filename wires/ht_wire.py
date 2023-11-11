@@ -4,7 +4,7 @@ from misc.input import Input
 from misc.out.body import Body
 from misc.out.head import Head
 from misc.out.header import Header, NoSuchHeader
-from net.sessions import ShortSession, Session
+from net.sessions import ShortSession, ISession
 
 
 class HtWire:
@@ -16,8 +16,8 @@ class HtWire:
     def __init__(self, address: str):
         self.session = ShortSession(address, 80)
 
-    @dispatch(Session)
-    def __init__(self, session: Session):
+    @dispatch(ISession)
+    def __init__(self, session: ISession):
         self.session = session
 
     def send(self, input_: Input) -> str:

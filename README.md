@@ -85,7 +85,7 @@ body.value()
 ### 3) Batch requests
 #### You can send multiple requests using one tcp connection
 ```python
-with LongSession("www.example.com", 80) as sess:
+with Session("www.example.com", 80) as sess:
     res1 = HtWire(sess).send(
         Request(
             st_line="GET /point1 HTTP/1.1",
