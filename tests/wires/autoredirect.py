@@ -5,7 +5,7 @@ from misc.input import Input
 from misc.out.status import Status
 from misc.str_input import StrInput
 from wires.autoredirect import AutoRedirect
-from wires.ht_wire import HtWire
+from wires.wire import Wire
 
 
 class RedirectWire:
@@ -34,7 +34,7 @@ class TestAutoRedirect(unittest.TestCase):
     def test_real_redirect(self):
         """Test a read redirect from google.com to www.google.com"""
         res_head = Head(
-            AutoRedirect(HtWire("google.com")).send(
+            AutoRedirect(Wire("google.com")).send(
                 StrInput(
                     "\r\n".join(
                         [

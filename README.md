@@ -33,11 +33,11 @@ req = GetRequest(
 ```
 ##### then send a request using Wire
 ```python
-HtWire("www.example.com").send(req)
+Wire("www.example.com").send(req)
 ```
 #### 1.3) POST Request with payload
 ```python
-HtWire("www.example.com").send(
+Wire("www.example.com").send(
     PostRequest(
         uri="/",
         headers={
@@ -51,7 +51,7 @@ HtWire("www.example.com").send(
 ### 2) Parse a response
 #### Once you got a response
 ```python
-response = HtWire("www.example.com").send(
+response = Wire("www.example.com").send(
     StrInput(
         "\r\n".join(
             ["GET / HTTP/1.1", "Host: www.example.com", "Connection: Close\r\n\r\n"]
@@ -86,14 +86,14 @@ body.value()
 #### You can send multiple requests using one tcp connection
 ```python
 with Session("www.example.com", 80) as sess:
-    res1 = HtWire(sess).send(
+    res1 = Wire(sess).send(
         Request(
             st_line="GET /point1 HTTP/1.1",
             headers={"Connection": "Keep-Alive", "Host": "www.example.com"},
         )
     )
 
-    res2 = HtWire(sess).send(
+    res2 = Wire(sess).send(
         Request(
             st_line="GET /point2 HTTP/1.1",
             headers={"Connection": "Close", "Host": "www.example.com"},
@@ -107,7 +107,7 @@ res2
 ### 4) Combining wires by using the power of decorators
 #### 4.1) Add a timeout to your request by just passing your original wire to HtTimedWire
 ```python
-HtTimedWire(HtWire("www.example.com"), timeout=3.0).send(
+TimedWire(Wire("www.example.com"), timeout=3.0).send(
     StrInput(
         "\r\n".join(
             ["GET / HTTP/1.1", "Host: www.example.com", "Connection: Close\r\n\r\n"]
@@ -117,7 +117,7 @@ HtTimedWire(HtWire("www.example.com"), timeout=3.0).send(
 ```
 #### 4.2) Add an auto redirection the similar way
 ```python
-AutoRedirect(HtWire("www.example.com")).send(
+AutoRedirect(Wire("www.example.com")).send(
     StrInput(
         "\r\n".join(
             ["GET / HTTP/1.1", "Host: www.example.com", "Connection: Close\r\n\r\n"]
@@ -127,8 +127,8 @@ AutoRedirect(HtWire("www.example.com")).send(
 ```
 #### 4.3) Add a retry mechanism by using retry strategies and backoffs
 ```python
-HtRetryWire(
-    HtWire("www.example.com"),
+RetryWire(
+    Wire("www.example.com"),
     strategy=StdRetry(
         total=3, retry_statuses=[500], backoff=ConstantBackoff(value=1.0)
     ),

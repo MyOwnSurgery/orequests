@@ -3,7 +3,7 @@ import unittest
 from misc.input import Input
 from misc.str_input import StrInput
 from retry.strategies.std_retry import StdRetry
-from wires.ht_retry_wire import HtRetryWire
+from wires.retry_wire import RetryWire
 
 
 class ExceptionWire:
@@ -19,7 +19,7 @@ class Status500Wire:
 class TestRetryWire(unittest.TestCase):
     def test_exceptions(self):
         with self.assertRaises(ExceptionGroup):
-            HtRetryWire(ExceptionWire()).send(
+            RetryWire(ExceptionWire()).send(
                 StrInput(
                     "\r\n".join(
                         [
@@ -34,7 +34,7 @@ class TestRetryWire(unittest.TestCase):
     def test_statuses(self):
         with self.assertRaises(ExceptionGroup):
             retry_strategy = StdRetry(retry_statuses=[500])
-            HtRetryWire(Status500Wire(), strategy=retry_strategy).send(
+            RetryWire(Status500Wire(), strategy=retry_strategy).send(
                 StrInput(
                     "\r\n".join(
                         [

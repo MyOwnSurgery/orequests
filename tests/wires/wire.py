@@ -1,7 +1,7 @@
 import unittest
 
 from misc.str_input import StrInput
-from wires.ht_wire import HtWire
+from wires.wire import Wire
 
 
 class FkSession:
@@ -24,14 +24,14 @@ class FkSession:
         return False
 
 
-class TestHtWire(unittest.TestCase):
+class TestWire(unittest.TestCase):
     def test_response_simple(self):
         response = (
             "HTTP/1.1 200 OK\r\nContent-Type: application/json"
             '\r\nContent-Length: 16\r\n\r\n{"msg": "HELLO"}'
         )
         with FkSession(response.encode()) as sess:
-            res = HtWire(sess).send(StrInput(""))
+            res = Wire(sess).send(StrInput(""))
 
         self.assertEqual(res, response)
 
@@ -41,7 +41,7 @@ class TestHtWire(unittest.TestCase):
             '\r\nContent-Length: 17\r\n\r\n{"msg": "HELLO"}\n'
         )
         with FkSession(response.encode()) as sess:
-            res = HtWire(sess).send(StrInput(""))
+            res = Wire(sess).send(StrInput(""))
 
         self.assertEqual(res, response)
 
@@ -51,7 +51,7 @@ class TestHtWire(unittest.TestCase):
             '\r\nContent-Length: 18\r\n\r\n\n{"msg": "HELLO"}\n'
         )
         with FkSession(response.encode()) as sess:
-            res = HtWire(sess).send(StrInput(""))
+            res = Wire(sess).send(StrInput(""))
 
         self.assertEqual(res, response)
 
@@ -61,6 +61,6 @@ class TestHtWire(unittest.TestCase):
             "\r\nContent-Length: 0\r\n\r\n"
         )
         with FkSession(response.encode()) as sess:
-            res = HtWire(sess).send(StrInput(""))
+            res = Wire(sess).send(StrInput(""))
 
         self.assertEqual(res, response)

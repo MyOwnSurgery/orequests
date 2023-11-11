@@ -5,16 +5,16 @@ from misc.out.headers import Headers
 from misc.input import Input
 from misc.out.st_line import StLine
 from misc.str_input import StrInput
-from wires.ht_wire import HtWire
-from misc.out.status import Status
 from wires.wire import Wire
+from misc.out.status import Status
+from wires.iwire import IWire
 
 import io
 import urllib.parse
 
 
 class AutoRedirect:
-    def __init__(self, origin: Wire):
+    def __init__(self, origin: IWire):
         self.origin = origin
 
     def send(self, input_: Input) -> str:
@@ -39,7 +39,7 @@ class AutoRedirect:
             if not port:
                 port = 443 if host.startswith("https") else 80
 
-            res = HtWire(host, port).send(StrInput(new_input))
+            res = Wire(host, port).send(StrInput(new_input))
             head = Head(res)
 
         return res

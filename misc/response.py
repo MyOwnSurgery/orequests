@@ -1,5 +1,5 @@
 from misc.str_input import StrInput
-from wires.ht_wire import HtWire
+from wires.wire import Wire
 
 import urllib.parse
 
@@ -21,7 +21,7 @@ class Response:
         resource, params = parsed_url.path if parsed_url.path else "/", parsed_url.query
 
         uri = resource + (f"?{params}" if params else "")
-        return HtWire(address=host, port=port).send(
+        return Wire(address=host, port=port).send(
             StrInput(
                 "\r\n".join(
                     [

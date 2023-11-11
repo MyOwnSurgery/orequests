@@ -3,7 +3,7 @@ import unittest
 
 from misc.input import Input
 from misc.str_input import StrInput
-from wires.ht_timed_wire import HtTimedWire
+from wires.timed_wire import TimedWire
 
 
 class SleepWire:
@@ -18,7 +18,7 @@ class SleepWire:
 class TestTimedWire(unittest.TestCase):
     def test_timeout(self):
         with self.assertRaises(TimeoutError):
-            HtTimedWire(SleepWire(sleep_for=10), 3).send(
+            TimedWire(SleepWire(sleep_for=10), 3).send(
                 StrInput(
                     "\r\n".join(
                         [
