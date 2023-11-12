@@ -108,8 +108,8 @@ class ShortSession:
     def __init__(self, address: str):
         self.__init__(Socket(addr=address, port=80))
 
-    @dispatch(Socket)
-    def __init__(self, socket: Socket):
+    @dispatch(ISocket)
+    def __init__(self, socket: ISocket):
         self.socket = socket
 
     def __enter__(self):

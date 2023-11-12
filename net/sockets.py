@@ -1,9 +1,10 @@
 import ssl
 from select import select
 from socket import socket, MSG_PEEK
-from typing import Protocol
+from typing import Protocol, runtime_checkable
 
 
+@runtime_checkable
 class ISocket(Protocol):
     def connect(self):
         pass
@@ -47,25 +48,23 @@ class SafeSocket:
     def __init__(
         self, addr: str, port: int, sock: socket = None, ssl_ctx: ssl.SSLContext = None
     ):
-        self.origin = Socket(
-            addr,
-            port,
-            (ssl_ctx or ssl.create_default_context()).wrap_socket(
+        self.addr = addr
+        self.port = port
+        self.sock = (ssl_ctx or ssl.create_default_context()).wrap_socket(
                 sock or socket(), server_hostname=addr
-            ),
-        )
+            )
 
     def connect(self):
-        self.origin.connect()
+        self.sock.connect((self.addr, self.port))
 
     def close(self):
-        self.origin.close()
+        self.sock.close()
 
     def send(self, input_: bytes):
-        self.origin.send(input_=input_)
+        self.sock.send(input_)
 
     def recv(self, *args) -> bytes:
-        return self.origin.recv(*args)
+        return self.sock.recv(*args)
 
     def has_some(self) -> bool:
-        return self.origin.has_some()
+        return bool(self.sock.pending())
