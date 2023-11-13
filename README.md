@@ -113,7 +113,7 @@ SafeWire("www.example.com").send(
     )
 )
 ```
-#### Or SafeConnection
+#### Or SafeSession
 ```python
 with SafeSession("www.example.com") as sess:
     Wire(sess).send(
