@@ -104,8 +104,34 @@ res1
 res2
 # HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n{"msg": "Hello from point2"}
 ```
-### 4) Combining wires by using the power of decorators
-#### 4.1) Add a timeout to your request by just passing your original wire to HtTimedWire
+### 4) SSL/TLS
+#### In order to send a request via safe channel you should use SafeWire
+```python
+SafeWire("www.example.com").send(
+    "\r\n".join(
+        ["GET / HTTP/1.1", "Host: www.example.com", "Connection: Close\r\n\r\n"]
+    )
+)
+```
+#### Or SafeConnection
+```python
+with SafeSession("www.example.com") as sess:
+    Wire(sess).send(
+        Request(
+            st_line="GET /point1 HTTP/1.1",
+            headers={"Connection": "Keep-Alive", "Host": "www.example.com"},
+        )
+    )
+
+    Wire(sess).send(
+        Request(
+            st_line="GET /point2 HTTP/1.1",
+            headers={"Connection": "Close", "Host": "www.example.com"},
+        )
+    )
+```
+### 5) Combining wires by using the power of decorators
+#### 5.1) Add a timeout to your request by just passing your original wire to HtTimedWire
 ```python
 TimedWire(Wire("www.example.com"), timeout=3.0).send(
     StrInput(
@@ -115,7 +141,7 @@ TimedWire(Wire("www.example.com"), timeout=3.0).send(
     )
 )
 ```
-#### 4.2) Add an auto redirection the similar way
+#### 5.2) Add an auto redirection the similar way
 ```python
 AutoRedirect(Wire("www.example.com")).send(
     StrInput(
@@ -125,7 +151,7 @@ AutoRedirect(Wire("www.example.com")).send(
     )
 )
 ```
-#### 4.3) Add a retry mechanism by using retry strategies and backoffs
+#### 5.3) Add a retry mechanism by using retry strategies and backoffs
 ```python
 RetryWire(
     Wire("www.example.com"),
