@@ -18,6 +18,7 @@ class AutoRedirect:
     def __init__(self, origin: IWire):
         self.origin = origin
 
+    # @TODO: Refactor
     def send(self, input_: Input) -> str:
         res = self.origin.send(input_)
         head = Head(res)
