@@ -80,7 +80,7 @@ class SafeSession:
 
     @dispatch(str)
     def __init__(self, address: str):
-        self.socket = SafeSocket(addr=address, port=80)
+        self.socket = SafeSocket(addr=address, port=443)
 
     def __enter__(self):
         self.socket.connect()
