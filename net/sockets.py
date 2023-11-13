@@ -51,8 +51,8 @@ class SafeSocket:
         self.addr = addr
         self.port = port
         self.sock = (ssl_ctx or ssl.create_default_context()).wrap_socket(
-                sock or socket(), server_hostname=addr
-            )
+            sock or socket(), server_hostname=addr
+        )
 
     def connect(self):
         self.sock.connect((self.addr, self.port))

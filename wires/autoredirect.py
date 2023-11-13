@@ -40,7 +40,9 @@ class AutoRedirect:
             if not port:
                 port = 443 if host.startswith("https") else 80
 
-            new_wire = SafeWire(host, port) if host.startswith("https") else Wire(host, port)
+            new_wire = (
+                SafeWire(host, port) if host.startswith("https") else Wire(host, port)
+            )
             res = new_wire.send(StrInput(new_input))
             head = Head(res)
 
