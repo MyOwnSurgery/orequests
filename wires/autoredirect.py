@@ -5,6 +5,7 @@ from misc.out.headers import Headers
 from misc.input import Input
 from misc.out.st_line import StLine
 from misc.str_input import StrInput
+from wires.safe_wire import SafeWire
 from wires.wire import Wire
 from misc.out.status import Status
 from wires.iwire import IWire
@@ -39,7 +40,8 @@ class AutoRedirect:
             if not port:
                 port = 443 if host.startswith("https") else 80
 
-            res = Wire(host, port).send(StrInput(new_input))
+            new_wire = SafeWire(host, port) if host.startswith("https") else Wire(host, port)
+            res = new_wire.send(StrInput(new_input))
             head = Head(res)
 
         return res
