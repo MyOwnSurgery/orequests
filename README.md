@@ -83,7 +83,7 @@ body.value()
 # {"msg": "Hello, World!"} (dict)
 ```
 ### 3) Batch requests
-#### You can send multiple requests using one tcp connection
+#### You can send multiple requests using single tcp connection
 ```python
 with Session("www.example.com", 80) as sess:
     res1 = Wire(sess).send(
