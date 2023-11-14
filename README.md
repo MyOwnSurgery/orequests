@@ -131,7 +131,7 @@ with SafeSession("www.example.com") as sess:
     )
 ```
 ### 5) Combining wires by using the power of decorators
-#### 5.1) Add a timeout to your request by just passing your original wire to HtTimedWire
+#### 5.1) Add a timeout to your request by just passing your original wire to TimedWire
 ```python
 TimedWire(Wire("www.example.com"), timeout=3.0).send(
     StrInput(
