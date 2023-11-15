@@ -2,8 +2,10 @@ from misc.out.body import Body
 from misc.out.head import Head
 from misc.out.header import Header
 from misc.out.headers import Headers
+from misc.in_.body import RawBody
 from misc.input import Input
 from misc.out.st_line import StLine
+from misc.request import Request
 from misc.str_input import StrInput
 from wires.safe_wire import SafeWire
 from wires.wire import Wire
@@ -32,11 +34,12 @@ class AutoRedirect:
             headers = Headers(input_head).value()
             headers["Host"] = host
 
-            with io.StringIO() as stream:
-                stream.write(start_line + "\r\n")
-                stream.writelines(f"{k}: {v}\r\n" for k, v in headers.items())
-                stream.write(input_body.value() + "\r\n\r\n")
-                new_input = stream.getvalue()
+            new_body = input_body.value()
+            new_request = Request(st_line=start_line,
+                                  headers=headers,
+                                  body=RawBody(new_body,
+                                               ct_type=headers['Content-Type'] if new_body else None)
+                                  )
 
             if not port:
                 port = 443 if host.startswith("https") else 80
@@ -44,7 +47,7 @@ class AutoRedirect:
             new_wire = (
                 SafeWire(host, port) if host.startswith("https") else Wire(host, port)
             )
-            res = new_wire.send(StrInput(new_input))
+            res = new_wire.send(new_request)
             head = Head(res)
 
         return res
