@@ -35,11 +35,13 @@ class AutoRedirect:
             headers["Host"] = host
 
             new_body = input_body.value()
-            new_request = Request(st_line=start_line,
-                                  headers=headers,
-                                  body=RawBody(new_body,
-                                               ct_type=headers['Content-Type'] if new_body else None)
-                                  )
+            new_request = Request(
+                st_line=start_line,
+                headers=headers,
+                body=RawBody(
+                    new_body, ct_type=headers["Content-Type"] if new_body else None
+                ),
+            )
 
             if not port:
                 port = 443 if host.startswith("https") else 80
