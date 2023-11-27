@@ -26,7 +26,7 @@ class AutoRedirect:
         head = Head(res)
         while 300 <= Status(head).int_value() <= 308:
             new_addr = urllib.parse.urlparse(Header(head, "Location").value())
-            host, port = new_addr.hostname, new_addr.port
+            host, port, scheme = new_addr.hostname, new_addr.port, new_addr.scheme
 
             input_val = input_.value()
             input_head, input_body = Head(input_val), Body(input_val)
@@ -40,14 +40,14 @@ class AutoRedirect:
                 headers=headers,
                 body=RawBody(
                     new_body, ct_type=headers["Content-Type"] if new_body else None
-                ),
+                ) if new_body else None,
             )
 
             if not port:
-                port = 443 if host.startswith("https") else 80
+                port = 443 if scheme == "https" else 80
 
             new_wire = (
-                SafeWire(host, port) if host.startswith("https") else Wire(host, port)
+                SafeWire(host, port) if scheme == "https" else Wire(host, port)
             )
             res = new_wire.send(new_request)
             head = Head(res)
