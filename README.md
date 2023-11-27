@@ -166,6 +166,3 @@ RetryWire(
     )
 )
 ```
-
-
-## The package is at lazy development stage :)
