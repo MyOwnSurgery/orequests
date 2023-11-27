@@ -52,6 +52,8 @@ class Wire:
             except NoSuchHeader:
                 return False
             return False
+        except (ValueError, IndexError):
+            return False
 
         body = Body(s).value().encode()
         if len(body) >= int(r_len):
