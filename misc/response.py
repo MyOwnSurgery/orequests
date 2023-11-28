@@ -1,4 +1,5 @@
 from misc.str_input import StrInput
+from wires.safe_wire import SafeWire
 from wires.wire import Wire
 
 import urllib.parse
@@ -8,21 +9,24 @@ class Response:
     def __init__(self, url: str):
         self.url = url
 
-    # @TODO: use https first
     def value(self) -> str:
-        if self.url.startswith("https"):
-            port = 443
+        if not (self.url.startswith("http://") or self.url.startswith("https://")):
+            url = "https://" + self.url
         else:
-            if not self.url.startswith("http"):
-                self.url = "http://" + self.url
-            port = 80
+            url = self.url
 
-        parsed_url = urllib.parse.urlparse(self.url)
-        host, port = parsed_url.hostname, parsed_url.port if parsed_url.port else port
+        parsed_url = urllib.parse.urlparse(url)
+        host, port, scheme = parsed_url.hostname, parsed_url.port, parsed_url.scheme
+
+        is_safe = scheme == "https"
+        if not port:
+            port = 443 if is_safe else 80
+        wire = SafeWire(host, port) if is_safe else Wire(host, port)
+
         resource, params = parsed_url.path if parsed_url.path else "/", parsed_url.query
-
         uri = resource + (f"?{params}" if params else "")
-        return Wire(address=host, port=port).send(
+
+        return wire.send(
             StrInput(
                 "\r\n".join(
                     [
