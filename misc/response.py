@@ -1,8 +1,7 @@
-from misc.str_input import StrInput
-from wires.safe_wire import SafeWire
-from wires.wire import Wire
-
 import urllib.parse
+
+from misc.str_input import StrInput
+from wires.wire_box import WireBox
 
 
 class Response:
@@ -18,10 +17,7 @@ class Response:
         parsed_url = urllib.parse.urlparse(url)
         host, port, scheme = parsed_url.hostname, parsed_url.port, parsed_url.scheme
 
-        is_safe = scheme == "https"
-        if not port:
-            port = 443 if is_safe else 80
-        wire = SafeWire(host, port) if is_safe else Wire(host, port)
+        wire = WireBox(host=host, port=port, scheme=scheme).wire()
 
         resource, params = parsed_url.path if parsed_url.path else "/", parsed_url.query
         uri = resource + (f"?{params}" if params else "")

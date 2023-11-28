@@ -1,19 +1,16 @@
+import urllib.parse
+
+from misc.in_.body import RawBody
+from misc.input import Input
 from misc.out.body import Body
 from misc.out.head import Head
 from misc.out.header import Header
 from misc.out.headers import Headers
-from misc.in_.body import RawBody
-from misc.input import Input
 from misc.out.st_line import StLine
-from misc.request import Request
-from misc.str_input import StrInput
-from wires.safe_wire import SafeWire
-from wires.wire import Wire
 from misc.out.status import Status
+from misc.request import Request
 from wires.iwire import IWire
-
-import io
-import urllib.parse
+from wires.wire_box import WireBox
 
 
 class AutoRedirect:
@@ -27,6 +24,8 @@ class AutoRedirect:
         while 300 <= Status(head).int_value() <= 308:
             new_addr = urllib.parse.urlparse(Header(head, "Location").value())
             host, port, scheme = new_addr.hostname, new_addr.port, new_addr.scheme
+
+            new_wire = WireBox(host=host, port=port, scheme=scheme).wire()
 
             input_val = input_.value()
             input_head, input_body = Head(input_val), Body(input_val)
@@ -42,11 +41,6 @@ class AutoRedirect:
                 if new_body
                 else None,
             )
-
-            is_safe = scheme == "https"
-            if not port:
-                port = 443 if is_safe else 80
-            new_wire = SafeWire(host, port) if is_safe else Wire(host, port)
 
             res = new_wire.send(new_request)
             head = Head(res)
