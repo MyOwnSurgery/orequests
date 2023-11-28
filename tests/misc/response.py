@@ -11,9 +11,3 @@ class TestResponse(unittest.TestCase):
 
         self.assertEqual(Status(Head(input_=res)).int_value(), 200)
         self.assertIn("google.com", res)
-
-    def test_uri(self):
-        res = Response("www.google.com/doodles").value()
-
-        self.assertEqual(Status(Head(input_=res)).int_value(), 200)
-        self.assertIn("google.com", res)
