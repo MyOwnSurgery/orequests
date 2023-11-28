@@ -4,6 +4,7 @@ from misc.input import Input
 from misc.out.body import Body
 from misc.out.head import Head
 from misc.out.header import Header, NoSuchHeader
+from misc.out.headers import Headers
 from net.sessions import ShortSession, ISession
 
 
@@ -41,22 +42,19 @@ class Wire:
     @staticmethod
     def _check_body_len(s: str) -> bool:
         head = Head(s)
+
         try:
-            r_len = Header(head, "Content-Length").value()
-        except NoSuchHeader:
-            try:
-                if Header(
-                    head, "Transfer-Encoding"
-                ).value() == "chunked" and s.endswith("\r\n0\r\n\r\n"):
-                    return True
-            except NoSuchHeader:
-                return False
-            return False
-        except (ValueError, IndexError):
+            headers = Headers(head).value()
+        except (IndexError, ValueError):
             return False
 
-        body = Body(s).value().encode()
-        if len(body) >= int(r_len):
+        if headers.get("Transfer-Encoding", None) == "chunked" and s.endswith(
+            "\r\n0\r\n\r\n"
+        ):
+            return True
+
+        ct_len = headers.get("Content-Length", None)
+        if ct_len and int(ct_len) == len(Body(s).value().encode()):
             return True
 
         return False
