@@ -39,16 +39,17 @@ class AutoRedirect:
                 st_line=start_line,
                 headers=headers,
                 body=RawBody(
-                    new_body, ct_type=headers["Content-Type"] if new_body else None
+                    new_body, ct_type=headers["Content-Type"]
                 ) if new_body else None,
             )
 
+            is_safe = scheme == "https"
             if not port:
-                port = 443 if scheme == "https" else 80
-
+                port = 443 if is_safe else 80
             new_wire = (
-                SafeWire(host, port) if scheme == "https" else Wire(host, port)
+                SafeWire(host, port) if is_safe else Wire(host, port)
             )
+
             res = new_wire.send(new_request)
             head = Head(res)
 
