@@ -37,8 +37,7 @@ class Wire:
 
                 response = response + conn.recv(4096).decode()
 
-    # @TODO: get rid of it immediately
-    # @TODO: handle chunked first
+    # @TODO: refactor in more oop style
     @staticmethod
     def _check_body_len(s: str) -> bool:
         head = Head(s)
