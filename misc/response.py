@@ -8,6 +8,7 @@ class Response:
     def __init__(self, url: str):
         self.url = url
 
+    # @TODO: use https first
     def value(self) -> str:
         if self.url.startswith("https"):
             port = 443
